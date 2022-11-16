@@ -481,14 +481,14 @@ private:
         }
     }
 
-    std::string readString(std::ifstream& midiFile, int length)
+    std::string readString(std::ifstream& midiFile, int numberOfBytes)
     {
         std::string result;
-        result.resize(length);
+        result.resize(numberOfBytes);
 
         try
         {
-            midiFile.read(&result[0], length); // since C++11 a std::string's allocation is guaranteed to be continuous
+            midiFile.read(&result[0], numberOfBytes); // since C++11 a std::string's allocation is guaranteed to be continuous
         }
         catch (const std::ifstream::failure& e)
         {
@@ -498,11 +498,11 @@ private:
         return result;
     }
 
-    void skip(std::ifstream& midiFile, int bytes)
+    void skip(std::ifstream& midiFile, int numberOfBytes)
     {
         try
         {
-            midiFile.ignore(bytes);
+            midiFile.ignore(numberOfBytes);
         }
         catch (const std::ifstream::failure& e)
         {
