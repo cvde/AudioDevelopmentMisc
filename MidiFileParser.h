@@ -162,20 +162,19 @@ public:
 
                 if (midiEventWithoutChannel == MIDI_EVENT_NOTE_OFF || midiEventWithoutChannel == MIDI_EVENT_NOTE_ON)
                 {
-                    // if the "running status" feature is used, a MIDI_EVENT_NOTE_ON event with a velocity of 0 is acutally a MIDI_EVENT_NOTE_OFF event
-
                     // 2 additional bytes
                     uint8_t channel = (midiEvent & 0x0fu); // the first 4 bits are the channel
                     auto key = readFixedLengthValue<uint8_t>(midiFile);
                     auto velocity = readFixedLengthValue<uint8_t>(midiFile);
-                    if (velocity > 0)
+                    auto noteOn = midiEventWithoutChannel == MIDI_EVENT_NOTE_ON ? true : false;
+
+                    // if the "running status" feature is used, a MIDI_EVENT_NOTE_ON event with a velocity of 0 is acutally a MIDI_EVENT_NOTE_OFF event
+                    if (noteOn && velocity == 0)
                     {
-                        midiEvents.emplace_back(track, channel, true, tickDelta, tickAbsolute, key, velocity);
+                        noteOn = false;
                     }
-                    else
-                    {
-                        midiEvents.emplace_back(track, channel, false, tickDelta, tickAbsolute, key, velocity);
-                    }
+
+                    midiEvents.emplace_back(track, channel, noteOn, tickDelta, tickAbsolute, key, velocity);
                 }
                 else if (midiEventWithoutChannel == MIDI_EVENT_POLYPHONIC_PRESSURE)
                 {
