@@ -9,15 +9,10 @@
 
 struct MidiFileParserMidiEvent
 {
-    MidiFileParserMidiEvent(int track, int channel, bool noteOn, int tickDelta, int tickAbsolute, int key, int velocity) 
-        : track(track)
-        , channel(channel)
-        , noteOn(noteOn)
-        , tickDelta(tickDelta)
-        , tickAbsolute(tickAbsolute)
-        , key(key)
-        , velocity(velocity)
-    {}
+    MidiFileParserMidiEvent(int track, int channel, bool noteOn, int tickDelta, int tickAbsolute, int key, int velocity)
+            : track(track), channel(channel), noteOn(noteOn), tickDelta(tickDelta), tickAbsolute(tickAbsolute), key(key), velocity(velocity)
+    {
+    }
 
     int track;
     int channel;
@@ -37,8 +32,10 @@ class MidiFileParserException : public std::exception
 {
 public:
     MidiFileParserException(const std::string& message)
-        : message(message)
-    {}
+            : message(message)
+    {
+    }
+
     const char* what() const noexcept
     {
         return message.c_str();
