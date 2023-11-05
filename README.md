@@ -1,7 +1,5 @@
 # MidiFileParser
-This is not a full-fledged MIDI library, but a small C++ header for parsing MIDI files. If you need to write your own MIDI parser, this should be a good starting point.
-
-At the moment only MIDI types 0 and 1 are supported and you need at least C++11.
+If you need to write your own MIDI parser, this might be a good starting point. At the moment only MIDI types 0 and 1 are supported and you need at least C++11.
 
 ## Usage
 
@@ -43,6 +41,3 @@ int main()
     }
 }
 ```
-
-## License
-MidiFileParser is free software and distributed under the [MIT License](LICENSE).
