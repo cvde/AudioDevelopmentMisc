@@ -1,6 +1,7 @@
 # ThreadPool
-This thread pool implementation uses https://github.com/max0x7ba/atomic_queue
-This makes it possible to submit tasks without triggering an allocation (lock free). The downside is that the maximum number of tasks submitted in parallel must be specified in advance.
+This thread pool implementation uses https://github.com/max0x7ba/atomic_queue.
+
+The advantage of this implementation is that tasks can be submitted without triggering an allocation (e.g. from an audio thread). The size of the queue (tasks waiting for execution) must be specified at compile time.
 
 ## Usage
 
