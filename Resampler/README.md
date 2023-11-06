@@ -6,9 +6,10 @@ libsamplerate documentation: https://libsndfile.github.io/libsamplerate/api_full
 ## Usage
 
 ``` cpp
-Resampler resampler;
+int channels = 2;
+Resampler resampler{channels};
 
-const int numInputSamples = std::ceil(numOutputSamples * sampleRateInput / sampleRateOutput);
-// fill inputBuffer with numInputSamples
-resampler.process(inputBuffer, outputBuffer, numInputSamples, numOutputSamples);
+int inputSamples = std::ceil(outputSamples * sampleRateInput / sampleRateOutput);
+// fill inputBuffer with inputSamples
+resampler.process(inputBuffer, outputBuffer, inputSamples, outputSamples);
 ```

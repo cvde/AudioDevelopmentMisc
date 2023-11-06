@@ -5,12 +5,12 @@
 class Resampler
 {
 public:
-    Resampler();
+    Resampler(int channels);
     ~Resampler();
     Resampler(const Resampler&) = delete;
     Resampler& operator=(const Resampler&) = delete;
 
-    void process(float* inputBuffer, float* outputBuffer, int numInputSamples, int numOutputSamples);
+    void process(float* inputBuffer, float* outputBuffer, int inputSamples, int outputSamples);
 
 private:
     struct Impl;

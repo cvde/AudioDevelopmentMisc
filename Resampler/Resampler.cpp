@@ -2,19 +2,19 @@
 #include "samplerate.h"
 #include <cassert>
 
-constexpr int CHANNELS = 2;
-
 struct Resampler::Impl
 {
     SRC_STATE* mState = nullptr;
 };
 
-Resampler::Resampler()
+Resampler::Resampler(int channels)
 {
+    assert(channels > 0);
+
     pImpl = std::make_unique<Impl>();
 
     int error = 0;
-    pImpl->mState = src_new(SRC_SINC_FASTEST, CHANNELS, &error);
+    pImpl->mState = src_new(SRC_SINC_FASTEST, channels, &error);
 
     if (pImpl->mState == nullptr)
     {
@@ -30,12 +30,12 @@ Resampler::~Resampler()
         src_delete(pImpl->mState);
 }
 
-void Resampler::process(float* inputBuffer, float* outputBuffer, int numInputSamples, int numOutputSamples)
+void Resampler::process(float* inputBuffer, float* outputBuffer, int inputSamples, int outputSamples)
 {
     assert(inputBuffer != nullptr);
     assert(outputBuffer != nullptr);
-    assert(numInputSamples > 0);
-    assert(numOutputSamples > 0);
+    assert(inputSamples > 0);
+    assert(outputSamples > 0);
 
     if (pImpl->mState == nullptr)
         return;
@@ -43,10 +43,10 @@ void Resampler::process(float* inputBuffer, float* outputBuffer, int numInputSam
     SRC_DATA data;
     data.data_in = inputBuffer;
     data.data_out = outputBuffer;
-    data.input_frames = numInputSamples;
-    data.output_frames = numOutputSamples;
+    data.input_frames = inputSamples;
+    data.output_frames = outputSamples;
     data.end_of_input = 0;
-    data.src_ratio = numOutputSamples / (double)numInputSamples;
+    data.src_ratio = outputSamples / (double)inputSamples;
 
     int error = 0;
     error = src_process(pImpl->mState, &data);
