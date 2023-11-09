@@ -8,6 +8,9 @@
 #include <thread>
 #include <vector>
 
+namespace edsp
+{
+
 template <int MAX_QUEUE_SIZE>
 class ThreadPool
 {
@@ -68,3 +71,5 @@ private:
     std::condition_variable mCondition;
     std::mutex mMutex;
 };
+
+} // namespace edsp

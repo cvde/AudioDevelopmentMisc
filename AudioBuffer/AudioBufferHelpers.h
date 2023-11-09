@@ -3,6 +3,9 @@
 #include <cassert>
 #include <cstring>
 
+namespace edsp
+{
+
 inline void clearBuffer(float** buffer, int channels, int samples)
 {
     assert(channels > 0);
@@ -60,3 +63,5 @@ inline void deinterleaveSamples(float* sourceBuffer, float** destinationBuffer, 
         for (int sample = 0; sample < samples; ++sample)
             destinationBuffer[channel][sample] = sourceBuffer[channels * sample + channel];
 }
+
+} // namespace edsp

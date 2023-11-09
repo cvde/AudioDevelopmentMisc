@@ -7,7 +7,7 @@ libsamplerate documentation: https://libsndfile.github.io/libsamplerate/api_full
 
 ``` cpp
 int channels = 2;
-Resampler resampler{channels};
+edsp::Resampler resampler{channels};
 
 int inputSamples = std::ceil(outputSamples * sampleRateInput / sampleRateOutput);
 // fill inputBuffer with inputSamples

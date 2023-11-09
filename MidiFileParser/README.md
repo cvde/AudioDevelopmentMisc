@@ -9,13 +9,13 @@ If you need to write your own MIDI parser, this might be a good starting point. 
 
 int main()
 {
-    MidiFileParser testFile;
+    edsp::MidiFileParser testFile;
 
     try
     {
         testFile.parse("test.mid");
     }
-    catch (const MidiFileParserException& e)
+    catch (const edsp::MidiFileParserException& e)
     {
         std::cout << e.what() << "\n";
         return EXIT_FAILURE;
@@ -28,7 +28,7 @@ int main()
     // std::vector containing the note on/off events: testFile.midiEvents
     std::cout << "Total amount of note on/off events: " << testFile.midiEvents.size() << "\n";
 
-    for (const MidiFileParserMidiEvent& midiEvent: testFile.midiEvents)
+    for (const edsp::MidiFileParserMidiEvent& midiEvent: testFile.midiEvents)
     {
         std::cout << "=======================\n";
         std::cout << "track: " << midiEvent.track << "\n";

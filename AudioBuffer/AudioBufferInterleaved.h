@@ -2,6 +2,9 @@
 
 #include <cassert>
 
+namespace edsp
+{
+
 template <typename T>
 class AudioBufferInterleaved
 {
@@ -102,3 +105,5 @@ private:
     int mSamples = 0;
     T* mBuffer = nullptr;
 };
+
+} // namespace edsp

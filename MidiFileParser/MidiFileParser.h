@@ -7,6 +7,9 @@
 #include <string>
 #include <vector>
 
+namespace edsp
+{
+
 struct MidiFileParserMidiEvent
 {
     MidiFileParserMidiEvent(int track, int channel, bool noteOn, int tickDelta, int tickAbsolute, int key, int velocity)
@@ -555,3 +558,5 @@ private:
     static const uint8_t META_EVENT_KEY_SIGNATURE = 0x59u;
     static const uint8_t META_EVENT_SEQUENCER_SPECIFIC = 0x7fu;
 };
+
+} // namespace edsp

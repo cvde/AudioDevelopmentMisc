@@ -8,12 +8,12 @@ The implementation is an adaptation of https://timur.audio/using-locks-in-real-t
 ## Usage
 
 ``` cpp
-SpinLock spinLock;
+edsp::SpinLock spinLock;
 
-std::lock_guard<SpinLock> lock(spinLock); // waits for the lock
+std::lock_guard<edsp::SpinLock> lock1(spinLock); // waits for the lock
 
-std::unique_lock<SpinLock> lock{spinLock, std::try_to_lock}; // does not wait for the lock
-if (!lock.owns_lock())
+std::unique_lock<edsp::SpinLock> lock2{spinLock, std::try_to_lock}; // does not wait for the lock
+if (!lock2.owns_lock())
 {
     // failed to acquire lock
 }

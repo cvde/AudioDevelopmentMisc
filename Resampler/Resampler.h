@@ -2,6 +2,9 @@
 
 #include <memory>
 
+namespace edsp
+{
+
 class Resampler
 {
 public:
@@ -16,3 +19,5 @@ private:
     struct Impl;
     std::unique_ptr<Impl> pImpl;
 };
+
+} // namespace edsp

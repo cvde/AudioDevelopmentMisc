@@ -2,6 +2,9 @@
 #include "samplerate.h"
 #include <cassert>
 
+namespace edsp
+{
+
 struct Resampler::Impl
 {
     SRC_STATE* mState = nullptr;
@@ -55,3 +58,5 @@ void Resampler::process(float* inputBuffer, float* outputBuffer, int inputSample
         // DBG("src_process failed with error " << src_strerror(error));
     }
 }
+
+} // namespace edsp

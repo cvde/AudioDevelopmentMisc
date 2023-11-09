@@ -7,7 +7,7 @@ The advantage of this implementation is that tasks can be submitted without trig
 
 ``` cpp
 constexpr int MAX_QUEUE_SIZE = 42;
-ThreadPool<MAX_QUEUE_SIZE> threadPool;
+edsp::ThreadPool<MAX_QUEUE_SIZE> threadPool;
 
 threadPool.enqueue(&myFunction, this, myFunctionParameter1, myFunctionParameter2);
 ```

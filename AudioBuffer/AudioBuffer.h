@@ -2,6 +2,9 @@
 
 #include <cassert>
 
+namespace edsp
+{
+
 template <typename T, int MAX_CHANNELS>
 class AudioBuffer
 {
@@ -119,3 +122,5 @@ private:
     int mSamples = 0;
     T* mBuffer[MAX_CHANNELS] = {};
 };
+
+} // namespace edsp
