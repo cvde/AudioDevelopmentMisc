@@ -8,9 +8,9 @@ class AudioBufferInterleaved
 public:
     AudioBufferInterleaved() = default;
 
-    AudioBufferInterleaved(int samples, int channels)
+    AudioBufferInterleaved(int channels, int samples)
     {
-        setSize(samples, channels);
+        setSize(channels, samples);
     }
 
     ~AudioBufferInterleaved()
@@ -25,11 +25,11 @@ public:
     // allow moving
     AudioBufferInterleaved(AudioBufferInterleaved&& other)
     {
-        mSamples = other.mSamples;
         mChannels = other.mChannels;
+        mSamples = other.mSamples;
         mBuffer = other.mBuffer;
-        other.mSamples = 0;
         other.mChannels = 0;
+        other.mSamples = 0;
         other.mBuffer = nullptr;
     }
     AudioBufferInterleaved& operator=(AudioBufferInterleaved&& other)
@@ -37,43 +37,36 @@ public:
         if (&other == this)
             return *this;
 
-        deallocateBuffer();
+        deallocateBuffer(); // this does not do anything if other is empty
 
-        mSamples = other.mSamples;
         mChannels = other.mChannels;
+        mSamples = other.mSamples;
         mBuffer = other.mBuffer;
-        other.mSamples = 0;
         other.mChannels = 0;
+        other.mSamples = 0;
         other.mBuffer = nullptr;
 
         return *this;
     }
 
-    void setSize(int samples, int channels)
+    void setSize(int channels, int samples)
     {
-        assert(samples > 0 && channels > 0);
-        if (samples == mSamples && channels == mChannels)
+        assert(channels > 0 && samples > 0);
+        if (channels == mChannels && samples == mSamples)
             return;
 
-        if (mSamples != 0 && mChannels != 0)
-        {
+        if (mChannels != 0 && mSamples != 0)
             deallocateBuffer();
-        }
 
-        mSamples = samples;
         mChannels = channels;
+        mSamples = samples;
         allocateBuffer();
     }
 
     T* getWritePointer()
     {
-        assert(mSamples > 0 && mChannels > 0);
+        assert(mChannels > 0 && mSamples > 0);
         return mBuffer;
-    }
-
-    int getNumSamples() const
-    {
-        return mSamples;
     }
 
     int getNumChannels() const
@@ -81,16 +74,21 @@ public:
         return mChannels;
     }
 
+    int getNumSamples() const
+    {
+        return mSamples;
+    }
+
 private:
     void allocateBuffer()
     {
-        const size_t totalSamples = static_cast<size_t>(mSamples) * static_cast<size_t>(mChannels);
+        const size_t totalSamples = static_cast<size_t>(mChannels) * static_cast<size_t>(mSamples);
         mBuffer = new T[totalSamples];
     }
 
     void deallocateBuffer()
     {
-        if (mSamples != 0 && mChannels != 0)
+        if (mChannels != 0 && mSamples != 0)
         {
             if (mBuffer != nullptr)
             {
@@ -100,7 +98,7 @@ private:
         }
     }
 
-    int mSamples = 0;
     int mChannels = 0;
+    int mSamples = 0;
     T* mBuffer = nullptr;
 };

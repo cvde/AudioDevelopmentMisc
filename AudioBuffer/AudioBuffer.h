@@ -8,9 +8,9 @@ class AudioBuffer
 public:
     AudioBuffer() = default;
 
-    AudioBuffer(int samples, int channels)
+    AudioBuffer(int channels, int samples)
     {
-        setSize(samples, channels);
+        setSize(channels, samples);
     }
 
     ~AudioBuffer()
@@ -25,70 +25,62 @@ public:
     // allow moving
     AudioBuffer(AudioBuffer&& other)
     {
-        mSamples = other.mSamples;
         mChannels = other.mChannels;
+        mSamples = other.mSamples;
         for (int channel = 0; channel < mChannels; ++channel)
         {
             mBuffer[channel] = other.mBuffer[channel];
             other.mBuffer[channel] = nullptr;
         }
-        other.mSamples = 0;
         other.mChannels = 0;
+        other.mSamples = 0;
     }
-
     AudioBuffer& operator=(AudioBuffer&& other)
     {
         if (&other == this)
             return *this;
 
-        deallocateBuffer();
+        deallocateBuffer(); // this does not do anything if other is empty
 
-        mSamples = other.mSamples;
         mChannels = other.mChannels;
+        mSamples = other.mSamples;
         for (int channel = 0; channel < mChannels; ++channel)
         {
             mBuffer[channel] = other.mBuffer[channel];
             other.mBuffer[channel] = nullptr;
         }
-        other.mSamples = 0;
         other.mChannels = 0;
+        other.mSamples = 0;
 
         return *this;
     }
 
-    void setSize(int samples, int channels)
+    void setSize(int channels, int samples)
     {
-        assert(samples > 0 && channels > 0);
         assert(channels <= MAX_CHANNELS);
-        if (samples == mSamples && channels == mChannels)
+        assert(channels > 0 && samples > 0);
+        if (channels == mChannels && samples == mSamples)
             return;
 
-        if (mSamples != 0 && mChannels != 0)
-        {
+        if (mChannels != 0 && mSamples != 0)
             deallocateBuffer();
-        }
 
-        mSamples = samples;
         mChannels = channels;
+        mSamples = samples;
         allocateBuffer();
     }
 
     T** getArrayOfWritePointers()
     {
-        assert(mSamples > 0 && mChannels > 0);
+        assert(mChannels > 0 && mSamples > 0);
         return mBuffer;
     }
 
     T* getWritePointer(int channel)
     {
-        assert(mSamples > 0 && mChannels > 0);
+        assert(mChannels > 0 && mSamples > 0);
         assert(channel <= mChannels);
         return mBuffer[channel];
-    }
-
-    int getNumSamples() const
-    {
-        return mSamples;
     }
 
     int getNumChannels() const
@@ -96,18 +88,21 @@ public:
         return mChannels;
     }
 
+    int getNumSamples() const
+    {
+        return mSamples;
+    }
+
 private:
     void allocateBuffer()
     {
         for (int channel = 0; channel < mChannels; ++channel)
-        {
             mBuffer[channel] = new T[static_cast<size_t>(mSamples)];
-        }
     }
 
     void deallocateBuffer()
     {
-        if (mSamples != 0 && mChannels != 0)
+        if (mChannels != 0 && mSamples != 0)
         {
             for (int channel = 0; channel < mChannels; ++channel)
             {
@@ -120,7 +115,7 @@ private:
         }
     }
 
-    int mSamples = 0;
     int mChannels = 0;
-    T* mBuffer[MAX_CHANNELS] = nullptr;
+    int mSamples = 0;
+    T* mBuffer[MAX_CHANNELS] = {};
 };

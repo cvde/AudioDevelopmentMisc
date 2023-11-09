@@ -18,7 +18,7 @@ inline void clearBuffer(float* buffer, int channels, int samples)
     assert(channels > 0);
     assert(samples > 0);
 
-    const size_t bufferSize = static_cast<size_t>(samples * channels) * sizeof(float);
+    const size_t bufferSize = static_cast<size_t>(channels * samples) * sizeof(float);
     std::memset(buffer, 0.0f, bufferSize);
 }
 
@@ -37,7 +37,7 @@ inline void addBuffer(float* sourceBuffer, float* destinationBuffer, int channel
     assert(channels > 0);
     assert(samples > 0);
 
-    for (int i = 0; i < samples * channels; ++i)
+    for (int i = 0; i < channels * samples; ++i)
         destinationBuffer[i] += sourceBuffer[i];
 }
 
@@ -58,5 +58,5 @@ inline void deinterleaveSamples(float* sourceBuffer, float** destinationBuffer, 
 
     for (int channel = 0; channel < channels; ++channel)
         for (int sample = 0; sample < samples; ++sample)
-            destinationBuffer[channel][sample] = sourceBuffer[sample * channels + channel];
+            destinationBuffer[channel][sample] = sourceBuffer[channels * sample + channel];
 }
