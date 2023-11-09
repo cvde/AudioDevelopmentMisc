@@ -1,31 +1,35 @@
 #pragma once
 
+#include <algorithm>
 #include <cassert>
 #include <cstring>
 
 namespace edsp
 {
 
-inline void clearBuffer(float** buffer, int channels, int samples)
+template <typename T>
+inline void clearBuffer(T** buffer, int channels, int samples)
 {
     assert(channels > 0);
     assert(samples > 0);
 
-    const size_t bufferSize = static_cast<size_t>(samples) * sizeof(float);
+    const size_t bufferSize = static_cast<size_t>(samples) * sizeof(T);
     for (int channel = 0; channel < channels; ++channel)
         std::memset(buffer[channel], 0.0f, bufferSize);
 }
 
-inline void clearBuffer(float* buffer, int channels, int samples)
+template <typename T>
+inline void clearBuffer(T* buffer, int channels, int samples)
 {
     assert(channels > 0);
     assert(samples > 0);
 
-    const size_t bufferSize = static_cast<size_t>(channels * samples) * sizeof(float);
+    const size_t bufferSize = static_cast<size_t>(channels * samples) * sizeof(T);
     std::memset(buffer, 0.0f, bufferSize);
 }
 
-inline void addBuffer(float** sourceBuffer, float** destinationBuffer, int channels, int samples)
+template <typename T>
+inline void addBuffer(T** sourceBuffer, T** destinationBuffer, int channels, int samples)
 {
     assert(channels > 0);
     assert(samples > 0);
@@ -35,7 +39,8 @@ inline void addBuffer(float** sourceBuffer, float** destinationBuffer, int chann
             destinationBuffer[channel][sample] += sourceBuffer[channel][sample];
 }
 
-inline void addBuffer(float* sourceBuffer, float* destinationBuffer, int channels, int samples)
+template <typename T>
+inline void addBuffer(T* sourceBuffer, T* destinationBuffer, int channels, int samples)
 {
     assert(channels > 0);
     assert(samples > 0);
@@ -44,7 +49,8 @@ inline void addBuffer(float* sourceBuffer, float* destinationBuffer, int channel
         destinationBuffer[i] += sourceBuffer[i];
 }
 
-inline void interleaveSamples(float** sourceBuffer, float* destinationBuffer, int channels, int samples)
+template <typename T>
+inline void interleaveSamples(T** sourceBuffer, T* destinationBuffer, int channels, int samples)
 {
     assert(channels > 0);
     assert(samples > 0);
@@ -54,7 +60,8 @@ inline void interleaveSamples(float** sourceBuffer, float* destinationBuffer, in
             destinationBuffer[sample * channels + channel] = sourceBuffer[channel][sample];
 }
 
-inline void deinterleaveSamples(float* sourceBuffer, float** destinationBuffer, int channels, int samples)
+template <typename T>
+inline void deinterleaveSamples(T* sourceBuffer, T** destinationBuffer, int channels, int samples)
 {
     assert(channels > 0);
     assert(samples > 0);
