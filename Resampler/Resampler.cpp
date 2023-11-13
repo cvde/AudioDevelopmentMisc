@@ -1,4 +1,5 @@
 #include "Resampler.h"
+#include "../Debug/Debug.h"
 #include "samplerate.h"
 #include <cassert>
 
@@ -20,9 +21,7 @@ Resampler::Resampler(int channels)
     pImpl->mState = src_new(SRC_SINC_FASTEST, channels, &error);
 
     if (pImpl->mState == nullptr)
-    {
-        // DBG("src_new failed with error " << src_strerror(error));
-    }
+        DBG("src_new failed with error " << src_strerror(error));
 
     src_reset(pImpl->mState);
 }
@@ -54,9 +53,7 @@ void Resampler::process(float* inputBuffer, float* outputBuffer, int inputSample
     int error = 0;
     error = src_process(pImpl->mState, &data);
     if (error != 0)
-    {
-        // DBG("src_process failed with error " << src_strerror(error));
-    }
+        DBG("src_process failed with error " << src_strerror(error));
 }
 
 } // namespace edsp
