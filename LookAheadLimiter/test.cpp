@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2023 Christian Voigt
+// SPDX-License-Identifier: MIT
+
 #include "../AudioBuffer/AudioBufferHelpers.h"
 #include "../AudioBuffer/AudioBufferInterleaved.h"
 #include "LookAheadLimiter.h"

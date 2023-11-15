@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2023 Christian Voigt
+// SPDX-License-Identifier: MIT
+
 #pragma once
 
 #include "../Debug/Debug.h"
