@@ -5,7 +5,7 @@
 namespace edsp
 {
 
-template <typename T, int MAX_CHANNELS>
+template <typename SampleType, int MAX_CHANNELS>
 class AudioBuffer
 {
 public:
@@ -73,17 +73,46 @@ public:
         allocateBuffer();
     }
 
-    T** getArrayOfWritePointers()
+    const SampleType** getArrayOfReadPointers() const
     {
         assert(mChannels > 0 && mSamples > 0);
         return mBuffer;
     }
 
-    T* getWritePointer(int channel)
+    SampleType** getArrayOfWritePointers()
     {
         assert(mChannels > 0 && mSamples > 0);
-        assert(channel <= mChannels);
+        return mBuffer;
+    }
+
+    const SampleType* getReadPointer(int channel) const
+    {
+        assert(mChannels > 0 && mSamples > 0);
+        assert(channel < mChannels);
         return mBuffer[channel];
+    }
+
+    SampleType* getWritePointer(int channel)
+    {
+        assert(mChannels > 0 && mSamples > 0);
+        assert(channel < mChannels);
+        return mBuffer[channel];
+    }
+
+    SampleType getSample(int channel, int sample) const
+    {
+        assert(mChannels > 0 && mSamples > 0);
+        assert(channel >= 0 && channel < mChannels);
+        assert(sample >= 0 && sample < mSamples);
+        return mBuffer[channel][sample];
+    }
+
+    SampleType setSample(int channel, int sample, SampleType value)
+    {
+        assert(mChannels > 0 && mSamples > 0);
+        assert(channel >= 0 && channel < mChannels);
+        assert(sample >= 0 && sample < mSamples);
+        mBuffer[channel][sample] = value;
     }
 
     int getNumChannels() const
@@ -100,7 +129,7 @@ private:
     void allocateBuffer()
     {
         for (int channel = 0; channel < mChannels; ++channel)
-            mBuffer[channel] = new T[static_cast<size_t>(mSamples)];
+            mBuffer[channel] = new SampleType[static_cast<size_t>(mSamples)];
     }
 
     void deallocateBuffer()
@@ -120,7 +149,7 @@ private:
 
     int mChannels = 0;
     int mSamples = 0;
-    T* mBuffer[MAX_CHANNELS] = {};
+    SampleType* mBuffer[MAX_CHANNELS] = {};
 };
 
 } // namespace edsp

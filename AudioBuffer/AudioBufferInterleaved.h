@@ -5,7 +5,7 @@
 namespace edsp
 {
 
-template <typename T>
+template <typename SampleType>
 class AudioBufferInterleaved
 {
 public:
@@ -66,10 +66,32 @@ public:
         allocateBuffer();
     }
 
-    T* getWritePointer()
+    const SampleType* getReadPointer() const
     {
         assert(mChannels > 0 && mSamples > 0);
         return mBuffer;
+    }
+
+    SampleType* getWritePointer()
+    {
+        assert(mChannels > 0 && mSamples > 0);
+        return mBuffer;
+    }
+
+    SampleType getSample(int channel, int sample) const
+    {
+        assert(mChannels > 0 && mSamples > 0);
+        assert(channel >= 0 && channel < mChannels);
+        assert(sample >= 0 && sample < mSamples);
+        return mBuffer[sample * mChannels + channel];
+    }
+
+    SampleType setSample(int channel, int sample, SampleType value)
+    {
+        assert(mChannels > 0 && mSamples > 0);
+        assert(channel >= 0 && channel < mChannels);
+        assert(sample >= 0 && sample < mSamples);
+        mBuffer[sample * mChannels + channel] = value;
     }
 
     int getNumChannels() const
@@ -86,7 +108,7 @@ private:
     void allocateBuffer()
     {
         const size_t totalSamples = static_cast<size_t>(mChannels) * static_cast<size_t>(mSamples);
-        mBuffer = new T[totalSamples];
+        mBuffer = new SampleType[totalSamples];
     }
 
     void deallocateBuffer()
@@ -103,7 +125,7 @@ private:
 
     int mChannels = 0;
     int mSamples = 0;
-    T* mBuffer = nullptr;
+    SampleType* mBuffer = nullptr;
 };
 
 } // namespace edsp
