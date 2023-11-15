@@ -1,7 +1,7 @@
 #pragma once
 
-#include "atomic_queue/atomic_queue.h"
 #include <atomic>
+#include <atomic_queue/atomic_queue.h>
 #include <condition_variable>
 #include <functional>
 #include <mutex>
@@ -38,7 +38,7 @@ public:
     ThreadPool& operator=(const ThreadPool& other) = delete;
 
     template <typename F, typename... A>
-    bool enqueue(F&& task, A&&... args)
+    bool enqueue(F&& task, A&&... args) noexcept
     {
         if (!mTasks.try_push(std::bind(std::forward<F>(task), std::forward<A>(args)...)))
             return false;

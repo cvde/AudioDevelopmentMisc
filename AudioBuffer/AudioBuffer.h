@@ -16,7 +16,7 @@ public:
         setSize(channels, samples);
     }
 
-    ~AudioBuffer()
+    ~AudioBuffer() noexcept
     {
         deallocateBuffer();
     }
@@ -26,7 +26,7 @@ public:
     AudioBuffer& operator=(const AudioBuffer&) = delete;
 
     // allow moving
-    AudioBuffer(AudioBuffer&& other)
+    AudioBuffer(AudioBuffer&& other) noexcept
     {
         mChannels = other.mChannels;
         mSamples = other.mSamples;
@@ -38,7 +38,7 @@ public:
         other.mChannels = 0;
         other.mSamples = 0;
     }
-    AudioBuffer& operator=(AudioBuffer&& other)
+    AudioBuffer& operator=(AudioBuffer&& other) noexcept
     {
         if (&other == this)
             return *this;
@@ -73,33 +73,33 @@ public:
         allocateBuffer();
     }
 
-    const SampleType** getArrayOfReadPointers() const
+    const SampleType** getArrayOfReadPointers() const noexcept
     {
         assert(mChannels > 0 && mSamples > 0);
         return mBuffer;
     }
 
-    SampleType** getArrayOfWritePointers()
+    SampleType** getArrayOfWritePointers() noexcept
     {
         assert(mChannels > 0 && mSamples > 0);
         return mBuffer;
     }
 
-    const SampleType* getReadPointer(int channel) const
+    const SampleType* getReadPointer(int channel) const noexcept
     {
         assert(mChannels > 0 && mSamples > 0);
         assert(channel < mChannels);
         return mBuffer[channel];
     }
 
-    SampleType* getWritePointer(int channel)
+    SampleType* getWritePointer(int channel) noexcept
     {
         assert(mChannels > 0 && mSamples > 0);
         assert(channel < mChannels);
         return mBuffer[channel];
     }
 
-    SampleType getSample(int channel, int sample) const
+    SampleType getSample(int channel, int sample) const noexcept
     {
         assert(mChannels > 0 && mSamples > 0);
         assert(channel >= 0 && channel < mChannels);
@@ -107,7 +107,7 @@ public:
         return mBuffer[channel][sample];
     }
 
-    SampleType setSample(int channel, int sample, SampleType value)
+    SampleType setSample(int channel, int sample, SampleType value) noexcept
     {
         assert(mChannels > 0 && mSamples > 0);
         assert(channel >= 0 && channel < mChannels);
@@ -115,12 +115,12 @@ public:
         mBuffer[channel][sample] = value;
     }
 
-    int getNumChannels() const
+    int getNumChannels() const noexcept
     {
         return mChannels;
     }
 
-    int getNumSamples() const
+    int getNumSamples() const noexcept
     {
         return mSamples;
     }
@@ -132,7 +132,7 @@ private:
             mBuffer[channel] = new SampleType[static_cast<size_t>(mSamples)];
     }
 
-    void deallocateBuffer()
+    void deallocateBuffer() noexcept
     {
         if (mChannels != 0 && mSamples != 0)
         {

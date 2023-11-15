@@ -113,7 +113,7 @@ public:
     }
 
     // resets the internal state
-    void reset()
+    void reset() noexcept
     {
         mBufferIndex = 0;
 

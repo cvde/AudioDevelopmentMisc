@@ -10,7 +10,7 @@ namespace edsp
 class Resampler
 {
 public:
-    Resampler(int channels)
+    Resampler(int channels) noexcept
     {
         assert(channels > 0);
 
@@ -22,7 +22,7 @@ public:
 
         src_reset(mState);
     }
-    ~Resampler()
+    ~Resampler() noexcept
     {
         if (mState != nullptr)
             src_delete(mState);
@@ -30,7 +30,7 @@ public:
     Resampler(const Resampler&) = delete;
     Resampler& operator=(const Resampler&) = delete;
 
-    void process(float* inputBuffer, float* outputBuffer, int inputSamples, int outputSamples)
+    void process(float* inputBuffer, float* outputBuffer, int inputSamples, int outputSamples) noexcept
     {
         assert(inputSamples > 0);
         assert(outputSamples > 0);
