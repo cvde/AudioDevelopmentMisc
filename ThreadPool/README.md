@@ -6,8 +6,13 @@ The advantage of this implementation is that tasks can be submitted without trig
 ## Usage
 
 ``` cpp
-constexpr int MAX_QUEUE_SIZE = 42;
-edsp::ThreadPool<MAX_QUEUE_SIZE> threadPool;
+#include "ThreadPool/ThreadPool.h"
 
+int maxQueueSize = 42;
+
+// call e.g. at application start
+edsp::ThreadPool<maxQueueSize> threadPool;
+
+// call from audio thread
 threadPool.enqueue(&myFunction, this, myFunctionParameter1, myFunctionParameter2);
 ```

@@ -8,6 +8,8 @@ The implementation is an adaptation of https://timur.audio/using-locks-in-real-t
 ## Usage
 
 ``` cpp
+#include "SpinLock/SpinLock.h"
+
 edsp::SpinLock spinLock;
 
 std::lock_guard<edsp::SpinLock> lock1(spinLock); // waits for the lock

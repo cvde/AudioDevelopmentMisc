@@ -6,10 +6,20 @@ The following example limits the signal to -3 dBFS and then adds 2 dB (the outpu
 ## Usage
 
 ``` cpp
-// call e.g. on application start
+#include "LookAheadLimiter/LookAheadLimiter.h"
+
+float attackMs = 10.0f;
+float releaseMs = 50.0f;
+float thresholdInDb = -3.0f;
+float makeupGainInDb = 2.0f;
+int channels = 2;
+double sampleRate = 48000.0;
+
 edsp::LookAheadLimiter limiter;
-limiter.configure(10.0f, 50.0f, -3.0f, 2.0f, channels, sampleRate);
+
+// call e.g. at application start
+limiter.configure(attackMs, releaseMs, thresholdInDb, makeupGainInDb, channels, sampleRate);
 
 // call from audio thread
-limiter.process(buffer, samples);
+limiter.process(interleavedAudioBuffer, samples);
 ```

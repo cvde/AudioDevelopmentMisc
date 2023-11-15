@@ -5,7 +5,7 @@ If you need to write your own MIDI parser, this might be a good starting point. 
 
 ``` cpp
 #include <iostream>
-#include "MidiFileParser.h"
+#include "MidiFileParser/MidiFileParser.h"
 
 int main()
 {
