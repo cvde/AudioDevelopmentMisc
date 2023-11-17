@@ -32,7 +32,7 @@ inline void clearBuffer(SampleType* buffer, int channels, int samples)
 }
 
 template <typename SampleType>
-inline void addBuffer(SampleType** sourceBuffer, SampleType** destinationBuffer, int channels, int samples)
+inline void addBuffer(const SampleType** sourceBuffer, SampleType** destinationBuffer, int channels, int samples)
 {
     assert(channels > 0);
     assert(samples > 0);
@@ -43,7 +43,7 @@ inline void addBuffer(SampleType** sourceBuffer, SampleType** destinationBuffer,
 }
 
 template <typename SampleType>
-inline void addBuffer(SampleType* sourceBuffer, SampleType* destinationBuffer, int channels, int samples)
+inline void addBuffer(const SampleType* sourceBuffer, SampleType* destinationBuffer, int channels, int samples)
 {
     assert(channels > 0);
     assert(samples > 0);
@@ -53,7 +53,7 @@ inline void addBuffer(SampleType* sourceBuffer, SampleType* destinationBuffer, i
 }
 
 template <typename SampleType>
-inline void interleaveSamples(SampleType** sourceBuffer, SampleType* destinationBuffer, int channels, int samples)
+inline void interleaveSamples(const SampleType** sourceBuffer, SampleType* destinationBuffer, int channels, int samples)
 {
     assert(channels > 0);
     assert(samples > 0);
@@ -64,7 +64,7 @@ inline void interleaveSamples(SampleType** sourceBuffer, SampleType* destination
 }
 
 template <typename SampleType>
-inline void deinterleaveSamples(SampleType* sourceBuffer, SampleType** destinationBuffer, int channels, int samples)
+inline void deinterleaveSamples(const SampleType* sourceBuffer, SampleType** destinationBuffer, int channels, int samples)
 {
     assert(channels > 0);
     assert(samples > 0);
