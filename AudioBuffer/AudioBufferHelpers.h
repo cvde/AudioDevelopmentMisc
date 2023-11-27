@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstddef>
 #include <cstring>
 
 namespace edsp
@@ -16,7 +17,7 @@ inline void clearBuffer(SampleType** buffer, int channels, int samples)
     assert(channels > 0);
     assert(samples > 0);
 
-    const size_t bufferSize = static_cast<size_t>(samples) * sizeof(SampleType);
+    const std::size_t bufferSize = static_cast<std::size_t>(samples) * sizeof(SampleType);
     for (int channel = 0; channel < channels; ++channel)
         std::memset(buffer[channel], 0.0f, bufferSize);
 }
@@ -27,7 +28,7 @@ inline void clearBuffer(SampleType* buffer, int channels, int samples)
     assert(channels > 0);
     assert(samples > 0);
 
-    const size_t bufferSize = static_cast<size_t>(channels * samples) * sizeof(SampleType);
+    const std::size_t bufferSize = static_cast<std::size_t>(channels * samples) * sizeof(SampleType);
     std::memset(buffer, 0.0f, bufferSize);
 }
 
@@ -69,8 +70,8 @@ inline void deinterleaveSamples(const SampleType* sourceBuffer, SampleType** des
     assert(channels > 0);
     assert(samples > 0);
 
-    for (int channel = 0; channel < channels; ++channel)
-        for (int sample = 0; sample < samples; ++sample)
+    for (int sample = 0; sample < samples; ++sample)
+        for (int channel = 0; channel < channels; ++channel)
             destinationBuffer[channel][sample] = sourceBuffer[channels * sample + channel];
 }
 

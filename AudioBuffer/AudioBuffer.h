@@ -4,6 +4,7 @@
 #pragma once
 
 #include <cassert>
+#include <cstddef>
 
 namespace edsp
 {
@@ -132,7 +133,7 @@ private:
     void allocateBuffer()
     {
         for (int channel = 0; channel < mChannels; ++channel)
-            mBuffer[channel] = new SampleType[static_cast<size_t>(mSamples)];
+            mBuffer[channel] = new SampleType[static_cast<std::size_t>(mSamples)];
     }
 
     void deallocateBuffer() noexcept

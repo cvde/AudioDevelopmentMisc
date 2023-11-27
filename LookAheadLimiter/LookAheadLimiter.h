@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <cstddef>
 #include <vector>
 
 namespace edsp
@@ -29,7 +30,7 @@ public:
         assert(channels > 0);
         assert(sampleRate > 0.0);
 
-        mAttackInSamples = static_cast<size_t>(std::ceil(attackMs * static_cast<float>(sampleRate) / 1000.0f));
+        mAttackInSamples = static_cast<std::size_t>(std::ceil(attackMs * static_cast<float>(sampleRate) / 1000.0f));
         mThreshold = std::pow(10.0f, thresholdInDb / 20.0f);
         mMakeupGain = std::pow(10.0f, makeupGainInDb / 20.0f);
         mChannels = channels;
@@ -38,7 +39,7 @@ public:
         mReleaseConst = std::pow(0.1f, 1.0f / (releaseMs * static_cast<float>(sampleRate) / 1000.0f + 1.0f));
 
         mMaxBuffer.resize(mAttackInSamples);
-        mDelayBuffer.resize(mAttackInSamples * static_cast<size_t>(mChannels));
+        mDelayBuffer.resize(mAttackInSamples * static_cast<std::size_t>(mChannels));
 
         reset();
     }
@@ -61,7 +62,7 @@ public:
                 // there hasn't been a maximum or the last maximum just left the buffer
                 const auto maxElementIterator = std::max_element(mMaxBuffer.begin(), mMaxBuffer.end());
                 mMaxBufferCurrentMaxValue = *maxElementIterator;
-                mMaxBufferCurrentMaxIndex = static_cast<size_t>(std::distance(mMaxBuffer.begin(), maxElementIterator));
+                mMaxBufferCurrentMaxIndex = static_cast<std::size_t>(std::distance(mMaxBuffer.begin(), maxElementIterator));
             }
             else
             {
@@ -95,7 +96,7 @@ public:
             for (int channel = 0; channel < mChannels; ++channel)
             {
                 // fill delay buffer
-                const size_t currentDelayBufferIndex = mBufferIndex * static_cast<size_t>(mChannels) + static_cast<size_t>(channel);
+                const std::size_t currentDelayBufferIndex = mBufferIndex * static_cast<std::size_t>(mChannels) + static_cast<std::size_t>(channel);
                 float sampleValue = mDelayBuffer[currentDelayBufferIndex];
                 mDelayBuffer[currentDelayBufferIndex] = buffer[sample * mChannels + channel];
 
@@ -131,18 +132,18 @@ public:
     }
 
 private:
-    size_t mAttackInSamples = 0;
+    std::size_t mAttackInSamples = 0;
     float mAttackConst = 0.0f;
     float mReleaseConst = 0.0f;
     float mThreshold = 0.0f;
     float mMakeupGain = 0.0f;
     int mChannels = 0;
 
-    size_t mBufferIndex = 0;
+    std::size_t mBufferIndex = 0;
 
     std::vector<float> mMaxBuffer;
     float mMaxBufferCurrentMaxValue = 0.0f;
-    size_t mMaxBufferCurrentMaxIndex = 0;
+    std::size_t mMaxBufferCurrentMaxIndex = 0;
 
     std::vector<float> mDelayBuffer;
 

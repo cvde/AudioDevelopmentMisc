@@ -6,6 +6,7 @@
 #include <atomic>
 #include <atomic_queue/atomic_queue.h>
 #include <condition_variable>
+#include <cstddef>
 #include <functional>
 #include <mutex>
 #include <thread>
@@ -20,9 +21,9 @@ class ThreadPool
 public:
     ThreadPool()
     {
-        size_t numThreads = std::thread::hardware_concurrency() > 0 ? std::thread::hardware_concurrency() : 1;
+        std::size_t numThreads = std::thread::hardware_concurrency() > 0 ? std::thread::hardware_concurrency() : 1;
         mThreads.reserve(numThreads);
-        for (size_t i = 0; i < numThreads; ++i)
+        for (std::size_t i = 0; i < numThreads; ++i)
         {
             mThreads.emplace_back([this]
                                   { threadFunction(); });
