@@ -37,7 +37,7 @@ struct MidiFileParserMidiEvent
 class MidiFileParserException : public std::exception
 {
 public:
-    MidiFileParserException(const std::string& message)
+    explicit MidiFileParserException(const std::string& message)
             : message(message)
     {
     }
@@ -55,7 +55,7 @@ class MidiFileParser
 {
 public:
     MidiFileParser() = default;
-    MidiFileParser(const std::string& fileName)
+    explicit MidiFileParser(const std::string& fileName)
     {
         parse(fileName);
     }

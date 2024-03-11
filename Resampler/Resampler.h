@@ -13,7 +13,7 @@ namespace edsp
 class Resampler
 {
 public:
-    Resampler(int channels) noexcept
+    explicit Resampler(int channels) noexcept
     {
         assert(channels > 0);
 
