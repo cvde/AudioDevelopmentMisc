@@ -60,9 +60,9 @@ public:
         parse(fileName);
     }
 
-    int midiType;
-    int numberOfTracks;
-    int ticksPerQuarterNote;
+    int midiType = 0;
+    int numberOfTracks = 0;
+    int ticksPerQuarterNote = 0;
     std::vector<MidiFileParserMidiEvent> midiEvents;
 
     void parse(const std::string& fileName)
@@ -80,25 +80,22 @@ public:
         if (headerId != "MThd")
             throw(MidiFileParserException("MIDI header not compliant with standard"));
 
-        auto headerSize = readFixedLengthValue<uint32_t>(midiFile);
+        auto headerSize = static_cast<int>(readFixedLengthValue<uint32_t>(midiFile));
         if (headerSize != 6)
             throw(MidiFileParserException("MIDI header size not compliant with standard"));
 
-        auto midiType = readFixedLengthValue<uint16_t>(midiFile);
-        this->midiType = midiType;
+        midiType = static_cast<int>(readFixedLengthValue<uint16_t>(midiFile));
         // 0 -> single track, 1 -> multiple tracks, 2 -> not supported atm
         if (midiType > 1)
             throw(MidiFileParserException("MIDI type not supported"));
 
-        auto numberOfTracks = readFixedLengthValue<uint16_t>(midiFile);
-        this->numberOfTracks = numberOfTracks;
+        numberOfTracks = static_cast<int>(readFixedLengthValue<uint16_t>(midiFile));
         if (numberOfTracks == 0)
             throw(MidiFileParserException("No MIDI tracks found"));
         if (midiType == 0 && numberOfTracks != 1)
             throw(MidiFileParserException("MIDI type 0 may only have one track"));
 
-        auto ticksPerQuarterNote = readFixedLengthValue<uint16_t>(midiFile);
-        this->ticksPerQuarterNote = ticksPerQuarterNote;
+        ticksPerQuarterNote = static_cast<int>(readFixedLengthValue<uint16_t>(midiFile));
 
         //
         // MIDI tracks
@@ -427,7 +424,7 @@ private:
         T result;
         try
         {
-            midiFile.read((char*)&result, sizeof(result));
+            midiFile.read(reinterpret_cast<char*>(&result), sizeof(result));
         }
         catch (const std::ifstream::failure& e)
         {
