@@ -121,11 +121,11 @@ public:
     {
         mBufferIndex = 0;
 
-        mMaxBuffer.clear();
+        std::fill(mMaxBuffer.begin(), mMaxBuffer.end(), 0.0f);
         mMaxBufferCurrentMaxValue = 0.0f;
         mMaxBufferCurrentMaxIndex = 0;
 
-        mDelayBuffer.clear();
+        std::fill(mDelayBuffer.begin(), mDelayBuffer.end(), 0.0f);
 
         mFadedGain = 1.0f;
         mSmoothedState = 1.0f;
